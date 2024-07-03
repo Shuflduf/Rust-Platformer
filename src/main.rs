@@ -113,10 +113,10 @@ async fn main() {
         {
             world.solid_move(platform.collider, platform.speed * get_frame_time(), 0.0);
             let pos = world.solid_pos(platform.collider);
-            if platform.speed > 1. && pos.x >= 300. {
+            if pos.x >= 300. {
                 platform.speed *= -1.;
             }
-            if platform.speed < -1. && pos.x <= 150. {
+            if pos.x <= 150. {
                 platform.speed *= -1.;
             }
         }
