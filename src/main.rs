@@ -87,6 +87,8 @@ async fn main() {
 
             if on_ground == false {
                 player.speed.y += 500. * get_frame_time();
+            } else {
+                player.speed.y = 0.0;
             }
 
             if is_key_down(KeyCode::Right) {
@@ -111,7 +113,7 @@ async fn main() {
         {
             world.solid_move(platform.collider, platform.speed * get_frame_time(), 0.0);
             let pos = world.solid_pos(platform.collider);
-            if platform.speed > 1. && pos.x >= 220. {
+            if platform.speed > 1. && pos.x >= 300. {
                 platform.speed *= -1.;
             }
             if platform.speed < -1. && pos.x <= 150. {
