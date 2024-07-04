@@ -9,14 +9,12 @@ struct Player {
     fn on_ground(&mut self, platforms: &[Rect]) -> bool {
         for i in platforms {
             
-            if self.position.y + self.size.y >= i.y && (self.position.y + self.size.y <= i.y + i.h) {
+            if self.position.y + self.size.y >= i.y && self.position.y + self.size.y <= i.y + i.h {
                 if (self.position.x + self.size.x / 2.0) > i.x && (self.position.x + self.size.x / 2.0) < i.x + i.w{
-                    if self.velocity.y > 0.0 {
+                    if self.velocity.y >= 0.0 {
                         self.position.y = i.y - self.size.y;
                         return true;
                     }
-                     // causes teleporting
-                    
                 }
             } 
         }
