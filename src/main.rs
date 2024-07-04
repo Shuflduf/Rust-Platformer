@@ -4,13 +4,18 @@ struct Player {
     position: Vec2,
     speed: f32,
     velocity: Vec2,
-}
-impl Player {
-    fn on_ground(&self) -> bool {
-        // println!("{}", self.position.y > screen_height() - 180.0);
-        self.position.y > screen_height() - 180.0
+} impl Player {
+    fn on_ground(&self, platforms: &[Rect]) -> bool {
+        for i in platforms {
+            if self.position.y > i.y - 80.0{
+                return true;
+            }
+        }
+        false
+        // self.position.y > screen_height() - 180.0
     }
 }
+
 
 
 #[macroquad::main("BasicShapes")]
@@ -23,7 +28,7 @@ async fn main() {
     };
 
 
-    let platforms = [Rect::new(0.0, screen_height() - 100.0, screen_width(), 100.0)];
+    let platforms = [Rect::new(0.0, screen_height() - 100.0, screen_width(), 100.0), ];
 
     loop {
         clear_background(BLUE);
@@ -34,7 +39,7 @@ async fn main() {
         else if is_key_down(KeyCode::Left)    {player.velocity.x = -player.speed * get_frame_time()}
         else {player.velocity.x = 0.0};
 
-        if player.on_ground() {
+        if player.on_ground(&platforms) {
             if is_key_pressed(KeyCode::Space){
                 player.velocity.y = -4.0;
             } else {
