@@ -57,6 +57,15 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "baf1de4339761588bc0619e3cbc0120ee582ebb74b53b4efbf79117bd2da40fd"
 
 [[package]]
+name = "collider"
+version = "0.3.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "ba1462139efca9ca15e335ae40d43d1fa998d8ff7270d8c12a72decf1d066e1a"
+dependencies = [
+ "fnv",
+]
+
+[[package]]
 name = "color_quant"
 version = "1.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -89,6 +98,12 @@ dependencies = [
  "crc32fast",
  "miniz_oxide",
 ]
+
+[[package]]
+name = "fnv"
+version = "1.0.7"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "3f9eec918d3f24069decb9af1554cad7c880e2da24a9afd88aca000531ab82c1"
 
 [[package]]
 name = "fontdue"
@@ -151,16 +166,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "macroquad-tiled"
-version = "0.2.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "a3b8791e385de2f6d399e9e4624a405e23c06855df35c134903fefc3bfb7241c"
-dependencies = [
- "macroquad",
- "nanoserde",
-]
-
-[[package]]
 name = "macroquad_macro"
 version = "0.1.8"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -196,21 +201,6 @@ dependencies = [
  "adler",
  "simd-adler32",
 ]
-
-[[package]]
-name = "nanoserde"
-version = "0.1.37"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "5de9cf844ab1e25a0353525bd74cb889843a6215fa4a0d156fd446f4857a1b99"
-dependencies = [
- "nanoserde-derive",
-]
-
-[[package]]
-name = "nanoserde-derive"
-version = "0.1.22"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e943b2c21337b7e3ec6678500687cdc741b7639ad457f234693352075c082204"
 
 [[package]]
 name = "ndk-sys"
@@ -283,8 +273,8 @@ dependencies = [
 name = "rust-platformer"
 version = "0.1.0"
 dependencies = [
+ "collider",
  "macroquad",
- "macroquad-tiled",
 ]
 
 [[package]]

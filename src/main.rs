@@ -6,13 +6,12 @@ struct Player {
     speed: f32,
     velocity: Vec2,
 } impl Player {
-    fn on_ground(&self, platforms: &[Rect]) -> bool {
+    fn on_ground(&mut self, platforms: &[Rect]) -> bool {
         for i in platforms {
             
-            if self.position.y + self.size.y > i.y  { //|| self.position.y + 2.0 > i.y - 80.0
-                // println!("ah");
-                if self.position.x > i.x && self.position.x < i.x + i.w{
-                    println!("{}", self.position.y + self.size.y < i.y);
+            if self.position.y + self.size.y >= i.y && (self.position.y + self.size.y < i.y + i.h) {
+                if (self.position.x + self.size.x / 2.0) > i.x && (self.position.x + self.size.x / 2.0) < i.x + i.w{
+                    self.position.y = i.y - self.size.y; // causes teleporting
                     return true;
                 }
             } 
@@ -36,6 +35,8 @@ async fn main() {
         Rect::new(0.0, screen_height() - 100.0, screen_width(), 100.0),
         Rect::new(200.0, 400.0, 300.0, 50.0)
     ];
+
+    // set_fullscreen(true);
 
     loop {
         clear_background(BLUE);

@@ -5,4 +5,4 @@ edition = "2021"
 
 [dependencies]
 macroquad = "*"
-macroquad-tiled = "*"
+collider = "*"
