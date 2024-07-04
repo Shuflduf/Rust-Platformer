@@ -2,21 +2,22 @@ use macroquad::{prelude::*, input::KeyCode};
 
 struct Player {
     position: Vec2,
+    size: Vec2,
     speed: f32,
     velocity: Vec2,
 } impl Player {
     fn on_ground(&self, platforms: &[Rect]) -> bool {
         for i in platforms {
             
-            if self.position.y < i.y - 80.0 { //|| self.position.y + 2.0 > i.y - 80.0
+            if self.position.y + self.size.y > i.y  { //|| self.position.y + 2.0 > i.y - 80.0
                 // println!("ah");
                 if self.position.x > i.x && self.position.x < i.x + i.w{
-                    println!("fnies");
+                    println!("{}", self.position.y + self.size.y < i.y);
+                    return true;
                 }
-                return false;
             } 
         }
-        true
+        false
     }
 }
 
@@ -25,6 +26,7 @@ async fn main() {
 
     let mut player = Player{
         position: vec2(0.0, 400.0),
+        size: vec2(20.0, 80.0),
         speed: 200.0,
         velocity: vec2(0.0, 0.0)
     };
@@ -47,7 +49,7 @@ async fn main() {
                 println!("jump");
             } else {
                 player.velocity.y = 0.0;
-                player.position.y = screen_height() - 179.0;
+                // player.position.y = screen_height() - 179.0;
             }
         } else {
             player.velocity.y += 10.0 * get_frame_time()
@@ -59,7 +61,7 @@ async fn main() {
 
         
 
-        draw_rectangle(player.position.x, player.position.y, 20.0, 80.0, BLACK);
+        draw_rectangle(player.position.x, player.position.y, player.size.x, player.size.y, BLACK);
 
         draw_text("IT WORKS!", 20.0, 20.0, 30.0, DARKGRAY);
 
