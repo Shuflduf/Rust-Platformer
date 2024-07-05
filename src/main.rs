@@ -1,5 +1,6 @@
 use macroquad::{prelude::*, input::KeyCode};
 
+mod levels;
 struct Player {
     position: Vec2,
     size: Vec2,
@@ -8,7 +9,6 @@ struct Player {
 } impl Player {
     fn on_ground(&mut self, platforms: &[Rect]) -> bool {
         for i in platforms {
-            
             if self.position.y + self.size.y >= i.y && self.position.y + self.size.y <= i.y + i.h {
                 if (self.position.x + self.size.x / 2.0) > i.x && (self.position.x + self.size.x / 2.0) < i.x + i.w{
                     if self.velocity.y >= 0.0 {
@@ -32,13 +32,10 @@ async fn main() {
         velocity: vec2(0.0, 0.0)
     };
 
-
-    let platforms = [
-        Rect::new(0.0, screen_height() - 100.0, screen_width(), 100.0),
-        Rect::new(200.0, 400.0, 300.0, 50.0)
-    ];
-
     // set_fullscreen(true);
+
+    let current_level = levels::levels::level_1();
+
 
     loop {
         clear_background(BLUE);
@@ -46,19 +43,18 @@ async fn main() {
        
         player.velocity.x = get_input_dir(KeyCode::Left, KeyCode::Right) * player.speed * get_frame_time();
 
-        if player.on_ground(&platforms) {
+        if player.on_ground(&current_level) {
             if is_key_pressed(KeyCode::Space){
                 player.velocity.y = -4.0;
                 println!("jump");
             } else {
                 player.velocity.y = 0.0;
-                // player.position.y = screen_height() - 179.0;
             }
         } else {
             player.velocity.y += 10.0 * get_frame_time()
         }
 
-        for platform in platforms {
+        for platform in current_level {
             draw_rectangle(platform.x, platform.y, platform.w, platform.h, GREEN)
         }
 
