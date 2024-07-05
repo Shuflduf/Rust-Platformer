@@ -1,4 +1,7 @@
-use macroquad::{prelude::*, input::KeyCode};
+use std::vec;
+
+use macroquad::{input::KeyCode, prelude::*};
+use miniquad::window::{get_window_position, set_window_position, set_window_size};
 
 mod levels;
 struct Player {
@@ -26,13 +29,14 @@ struct Player {
 async fn main() {
 
     let mut player = Player{
-        position: vec2(0.0, 400.0),
-        size: vec2(20.0, 80.0),
-        speed: 200.0,
+        position: vec2(0.0, 100.0),
+        size: vec2(20.0, 20.0),
+        speed: 100.0,
         velocity: vec2(0.0, 0.0)
     };
-
-    // set_fullscreen(true);
+    
+    set_window_size(400, 400);
+    let window_multiplier = vec2(4.0, 1.97);
 
     let current_level = levels::levels::level_1();
 
@@ -40,6 +44,7 @@ async fn main() {
     loop {
         clear_background(BLUE);
 
+        
        
         player.velocity.x = get_input_dir(KeyCode::Left, KeyCode::Right) * player.speed * get_frame_time();
 
@@ -62,8 +67,10 @@ async fn main() {
 
         draw_rectangle(player.position.x, player.position.y, player.size.x, player.size.y, BLACK);
 
-        draw_text("IT WORKS!", 20.0, 20.0, 30.0, DARKGRAY);
+        draw_text("LEVEL ONE", 20.0, 20.0, 30.0, DARKGRAY);
 
+        println!("{:?}", get_window_position());
+        set_window_position((player.position.x * window_multiplier.x) as u32 , (player.position.y * window_multiplier.y) as u32);
         player.position += player.velocity;
         
         next_frame().await
@@ -81,6 +88,7 @@ fn get_input_dir(first: KeyCode, second: KeyCode) -> f32 {
         0.0
     }
 }
+
 
 // fn move_player(dir: vec2) {
 //  pass
