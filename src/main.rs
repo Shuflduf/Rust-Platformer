@@ -2,7 +2,7 @@
 use macroquad::{input::KeyCode, prelude::*};
 use miniquad::window::{set_window_position, set_window_size};
 
-use crate::levels::levels::*;
+use crate::levels::*;
 mod levels;
 struct Player {
     position: Vec2,
@@ -25,9 +25,12 @@ struct Player {
         false
     }
 
-    fn in_end(&self, finish: &Rect) -> bool {
+    fn in_end(&self, finish_pos: Vec2, finish_size: Vec2) -> bool {
         let center = self.position + (self.size / 2.0);
-        center.x > finish.x && center.x < finish.x + finish.w && center.y > finish.y && center.y < finish.y + finish.h
+            center.x > finish_pos.x 
+            && center.x < finish_pos.x + finish_size.x
+            && center.y > finish_pos.y 
+            && center.y < finish_pos.y + finish_size.y
     }
 }
 
@@ -35,7 +38,7 @@ struct Player {
 async fn main() {
 
     let all_levels = [level_0(), level_1()];
-    let current_level = 0;
+    let mut current_level = 0;
 
     let mut player = Player{
         position: vec2(0.0, 0.0),
@@ -44,21 +47,21 @@ async fn main() {
         speed: 100.0,
         velocity: vec2(0.0, 0.0)
     };
+
+    let finish_size = vec2(50.0, 50.0);
     
     set_window_size(400, 400);
     let window_multiplier = vec2(4.0, 1.97);
 
-    let current_stage = &all_levels[current_level];
+    let mut current_stage = &all_levels[current_level];
     player.position = current_stage.start_pos;
 
 
     loop {
-        clear_background(BLUE);
+        clear_background(WHITE);
 
-        
-       
         player.velocity.x = get_input_dir(KeyCode::Left, KeyCode::Right) * player.speed * get_frame_time();
-        // let platforms_slive = &current_level[..];
+
         if player.on_ground(current_stage.platforms.clone()) {
             if is_key_pressed(KeyCode::Space){
                 player.velocity.y = -player.jump;
@@ -69,24 +72,37 @@ async fn main() {
             player.velocity.y += 10.0 * get_frame_time()
         }
 
+        // draw all platforms
         for platform in &current_stage.platforms {
-            draw_rectangle(platform.x, platform.y, platform.w, platform.h, GREEN)
+            draw_rectangle(platform.x, platform.y, platform.w, platform.h, BLACK)
         }
-        draw_rectangle(current_stage.finish.x, current_stage.finish.y, current_stage.finish.w, current_stage.finish.h, RED);
 
-        
+        // draw finish
+        draw_rectangle(current_stage.finish.x, current_stage.finish.y, finish_size.x, finish_size.y, RED);
 
-        draw_rectangle(player.position.x, player.position.y, player.size.x, player.size.y, BLACK);
+        // write level name
+        draw_text(&current_stage.name, 20.0, 20.0, 30.0, BLACK);
 
-        draw_text("LEVEL ONE", 20.0, 20.0, 30.0, DARKGRAY);
-
+        // move window to player
         set_window_position((player.position.x * window_multiplier.x) as u32 , (player.position.y * window_multiplier.y) as u32);
-        player.position += player.velocity;
-        println!("{}", player.in_end(&current_stage.finish));
 
+        // add velocity to player, basically `move_and_slide()`
+        player.position += player.velocity;
+
+        // check if the player finished
+        if player.in_end(current_stage.finish, finish_size) {
+            current_level += 1;
+            current_stage = &all_levels[current_level];
+            player.position = current_stage.start_pos;
+        }
+
+        // reset the player if they go off the screen
         if player.position.y > 1080.0 {
             player.position = current_stage.start_pos
         }
+
+        //draw player
+        draw_rectangle(player.position.x, player.position.y, player.size.x, player.size.y, BLACK);
 
         next_frame().await
     }
@@ -103,8 +119,3 @@ fn get_input_dir(first: KeyCode, second: KeyCode) -> f32 {
         0.0
     }
 }
-
-
-// fn move_player(dir: vec2) {
-//  pass
-// }
