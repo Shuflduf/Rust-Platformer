@@ -1,5 +1,5 @@
 use macroquad::{input::KeyCode, prelude::*};
-use miniquad::window::{get_window_position, set_window_position, set_window_size};
+use miniquad::window::{set_window_position, set_window_size};
 
 mod levels;
 struct Player {
@@ -21,6 +21,11 @@ struct Player {
             } 
         }
         false
+    }
+
+    fn in_end(&self, finish: &Rect) -> bool {
+        let center = self.position + (self.size / 2.0);
+        center.x > finish.x && center.x < finish.x + finish.w && center.y > finish.y && center.y < finish.y + finish.h
     }
 }
 
@@ -52,7 +57,6 @@ async fn main() {
         if player.on_ground(current_level.platforms.clone()) {
             if is_key_pressed(KeyCode::Space){
                 player.velocity.y = -player.jump;
-                println!("jump");
             } else {
                 player.velocity.y = 0.0;
             }
@@ -71,10 +75,9 @@ async fn main() {
 
         draw_text("LEVEL ONE", 20.0, 20.0, 30.0, DARKGRAY);
 
-        println!("{:?}", get_window_position());
         set_window_position((player.position.x * window_multiplier.x) as u32 , (player.position.y * window_multiplier.y) as u32);
         player.position += player.velocity;
-        
+        println!("{}", player.in_end(&current_level.finish));
         next_frame().await
     }
 }
