@@ -1,13 +1,15 @@
 pub mod levels {
-    use macroquad::math::Rect;
+    use macroquad::math::{vec2, Rect, Vec2};
 
     pub struct Level {
+        pub start_pos: Vec2,
         pub platforms: Vec<Rect>,
         pub finish: Rect,
     }
 
     pub fn level_1() -> Level {
         Level{
+            start_pos: vec2(20.0, 300.0),
             platforms: vec![
                 Rect::new(0.0, 350.0, 400.0, 50.0),
                 Rect::new(100.0, 290.0, 100.0, 20.0),

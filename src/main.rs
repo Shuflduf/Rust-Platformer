@@ -28,7 +28,7 @@ struct Player {
 async fn main() {
 
     let mut player = Player{
-        position: vec2(0.0, 100.0),
+        position: vec2(0.0, 0.0),
         size: vec2(20.0, 20.0),
         jump: 3.0,
         speed: 100.0,
@@ -39,6 +39,7 @@ async fn main() {
     let window_multiplier = vec2(4.0, 1.97);
 
     let current_level = levels::levels::level_1();
+    player.position = current_level.start_pos;
 
 
     loop {
