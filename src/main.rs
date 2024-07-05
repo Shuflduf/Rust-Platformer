@@ -1,6 +1,8 @@
+// use levels::levels::{level_1, level_2};
 use macroquad::{input::KeyCode, prelude::*};
 use miniquad::window::{set_window_position, set_window_size};
 
+use crate::levels::levels::*;
 mod levels;
 struct Player {
     position: Vec2,
@@ -32,6 +34,9 @@ struct Player {
 #[macroquad::main("Platformer")]
 async fn main() {
 
+    let all_levels = [level_0(), level_1()];
+    let current_level = 0;
+
     let mut player = Player{
         position: vec2(0.0, 0.0),
         size: vec2(20.0, 20.0),
@@ -43,8 +48,8 @@ async fn main() {
     set_window_size(400, 400);
     let window_multiplier = vec2(4.0, 1.97);
 
-    let current_level = levels::levels::level_1();
-    player.position = current_level.start_pos;
+    let current_stage = &all_levels[current_level];
+    player.position = current_stage.start_pos;
 
 
     loop {
@@ -54,7 +59,7 @@ async fn main() {
        
         player.velocity.x = get_input_dir(KeyCode::Left, KeyCode::Right) * player.speed * get_frame_time();
         // let platforms_slive = &current_level[..];
-        if player.on_ground(current_level.platforms.clone()) {
+        if player.on_ground(current_stage.platforms.clone()) {
             if is_key_pressed(KeyCode::Space){
                 player.velocity.y = -player.jump;
             } else {
@@ -64,10 +69,10 @@ async fn main() {
             player.velocity.y += 10.0 * get_frame_time()
         }
 
-        for platform in &current_level.platforms {
+        for platform in &current_stage.platforms {
             draw_rectangle(platform.x, platform.y, platform.w, platform.h, GREEN)
         }
-        draw_rectangle(current_level.finish.x, current_level.finish.y, current_level.finish.w, current_level.finish.h, RED);
+        draw_rectangle(current_stage.finish.x, current_stage.finish.y, current_stage.finish.w, current_stage.finish.h, RED);
 
         
 
@@ -77,7 +82,12 @@ async fn main() {
 
         set_window_position((player.position.x * window_multiplier.x) as u32 , (player.position.y * window_multiplier.y) as u32);
         player.position += player.velocity;
-        println!("{}", player.in_end(&current_level.finish));
+        println!("{}", player.in_end(&current_stage.finish));
+
+        if player.position.y > 1080.0 {
+            player.position = current_stage.start_pos
+        }
+
         next_frame().await
     }
 }
