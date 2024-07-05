@@ -37,8 +37,8 @@ struct Player {
 #[macroquad::main("Platformer")]
 async fn main() {
 
-    let all_levels = [level_0(), level_1()];
-    let mut current_level = 0;
+    let all_levels = [level_0(), level_1(), level_2()];
+    let mut current_level = 2;
 
     let mut player = Player{
         position: vec2(0.0, 0.0),
@@ -59,6 +59,7 @@ async fn main() {
 
     loop {
         clear_background(WHITE);
+        set_window_size(400, 400);
 
         player.velocity.x = get_input_dir(KeyCode::Left, KeyCode::Right) * player.speed * get_frame_time();
 
@@ -83,9 +84,6 @@ async fn main() {
         // write level name
         draw_text(&current_stage.name, 20.0, 20.0, 30.0, BLACK);
 
-        // move window to player
-        set_window_position((player.position.x * window_multiplier.x) as u32 , (player.position.y * window_multiplier.y) as u32);
-
         // add velocity to player, basically `move_and_slide()`
         player.position += player.velocity;
 
@@ -100,6 +98,9 @@ async fn main() {
         if player.position.y > 1080.0 {
             player.position = current_stage.start_pos
         }
+
+        // move window to player
+        set_window_position((player.position.x * window_multiplier.x) as u32 , (player.position.y * window_multiplier.y) as u32);
 
         //draw player
         draw_rectangle(player.position.x, player.position.y, player.size.x, player.size.y, BLACK);
