@@ -8,7 +8,7 @@ pub struct Ui<'a> {
 pub fn start_menu() -> Ui<'static>{
     Ui {
         text: "Exodus",
-        button_text: "PLAY",
+        button_text: "START",
     }
     
 }
