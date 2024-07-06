@@ -1,11 +1,8 @@
-use macroquad::ui::root_ui;
-use macroquad::ui::widgets::Button;
 use macroquad::{input::KeyCode, prelude::*};
 use miniquad::window::{set_window_position, set_window_size};
 
 use crate::levels::*;
 mod levels;
-use crate::menus::*;
 mod menus;
 struct Player {
     position: Vec2,
@@ -78,7 +75,7 @@ async fn main() {
         EndScreen,
     }
 
-    let mut current_state = GameState::MainMenu;
+    let mut current_state = GameState::Game(9);
 
     let all_levels = [level_0(), level_1(), level_2(), level_3(), level_4(), level_5(), level_6(), level_7(), level_8(), level_9()];
 
@@ -99,7 +96,6 @@ async fn main() {
     loop {
     match current_state {
         GameState::MainMenu => {
-            
             let main_menu = menus::start_menu();
             'render_loop: loop {
                 clear_background(WHITE);
@@ -123,6 +119,7 @@ async fn main() {
         }
         GameState::Game(level) => {
             let finish_size = vec2(50.0, 50.0);
+            clock = 0.0;
 
             let current_stage = &all_levels[level];
             player.position = current_stage.start_pos;
@@ -172,9 +169,10 @@ async fn main() {
                 // check if the player finished
                 if player.in_end(current_stage.finish, finish_size) {
                     current_state = GameState::Game(level + 1);
+                    if level + 1 >= all_levels.len() {
+                        current_state = GameState::EndScreen
+                    }
                     break 'platformer_loop;
-                    // current_stage = &all_levels[level + 1];
-                    // player.position = current_stage.start_pos;
                 }
         
                 // reset the player if they go off the screen
@@ -195,7 +193,27 @@ async fn main() {
             }
         }
         GameState::EndScreen => {
-            todo!()
+            let end_screen = menus::end_screen();
+            'render_loop: loop {
+                clear_background(WHITE);
+                
+                let final_time = &format!("{}", clock)[..];
+                draw_text(final_time, 100.0, 120.0, 80.0, BLACK);
+                
+                let button_rect = Rect::new(90.0, 150.0, 220.0, 100.0);
+
+                draw_rectangle(button_rect.x, button_rect.y, button_rect.w, button_rect.h, BLACK);
+                draw_text(end_screen.button_text, 100.0, 225.0, 90.0, RED);
+
+                if is_mouse_button_pressed(MouseButton::Left) {
+                    if button_rect.contains(mouse_position().into()){
+                        current_state = GameState::Game(0);
+                        break 'render_loop;
+                    }
+                }
+
+                next_frame().await
+            }
         }
     }
     }   
