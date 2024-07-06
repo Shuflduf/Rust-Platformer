@@ -1,9 +1,11 @@
 // use levels::levels::{level_1, level_2};
 use macroquad::{input::KeyCode, prelude::*};
 use miniquad::window::{set_window_position, set_window_size};
+use state_machine::State;
 
 use crate::levels::*;
 mod levels;
+mod menus;
 struct Player {
     position: Vec2,
     size: Vec2,
@@ -69,8 +71,15 @@ struct Player {
 #[macroquad::main("Platformer")]
 async fn main() {
 
+    enum GameState {
+        MainMenu,
+        Game(usize),
+        EndScreen,
+    }
+
+    let mut current_state = GameState::Game(1);
+
     let all_levels = [level_0(), level_1(), level_2(), level_3(), level_4(), level_5(), level_6(), level_7(), level_8(), level_9()];
-    let mut current_level = 9;
 
     let mut player = Player{
         position: vec2(0.0, 0.0),
@@ -83,80 +92,99 @@ async fn main() {
     let clock_enabled = true;
     let mut clock = 0.0;
 
-    let finish_size = vec2(50.0, 50.0);
-    
     set_window_size(400, 400);
     let window_multiplier = vec2(4.0, 1.97);
 
-    let mut current_stage = &all_levels[current_level];
-    player.position = current_stage.start_pos;
-
-
     loop {
-        clear_background(WHITE);
-        set_window_size(400, 400);
-
-        player.velocity.x = get_input_dir(KeyCode::Left, KeyCode::Right) * player.speed * get_frame_time();
-
-        if player.on_ground(&current_stage.platforms) {
-            if is_key_pressed(KeyCode::Space){
-                player.velocity.y = -player.jump;
-            } else {
-                player.velocity.y = 0.0;
-            }
-        } else {
-            player.velocity.y += 10.0 * get_frame_time()
+    match current_state {
+        GameState::MainMenu => {
+            todo!()
         }
+        GameState::Game(level) => {
 
-        // draw all platforms
-        for (platform, passable) in &current_stage.platforms {
-            if !passable {
-               draw_rectangle(platform.x, platform.y, platform.w, platform.h, BLACK) 
-            } else {
-                draw_rectangle(platform.x, platform.y, platform.w, platform.h, DARKGRAY) 
-            }
-            
-        }
 
-        // draw finish
-        draw_rectangle(current_stage.finish.x, current_stage.finish.y, finish_size.x, finish_size.y, RED);
+            let finish_size = vec2(50.0, 50.0);
 
-        // write level name
-        draw_text(&current_stage.name, 20.0, 20.0, 30.0, BLACK);
-
-        if clock_enabled {
-            clock += get_frame_time();
-            let clock_text = &format!("{:.2}", clock)[..];
-            draw_text(clock_text, 320.0, 20.0, 30.0, BLACK);
-        }
-        
-
-        // add velocity to player, basically `move_and_slide()`
-        player.position += player.velocity;
-
-        // check if the player finished
-        if player.in_end(current_stage.finish, finish_size) {
-            current_level += 1;
-            current_stage = &all_levels[current_level];
+            let current_stage = &all_levels[level];
             player.position = current_stage.start_pos;
+
+            'platformer_loop: loop {
+                clear_background(WHITE);
+                set_window_size(400, 400);
+        
+                player.velocity.x = get_input_dir(KeyCode::Left, KeyCode::Right) * player.speed * get_frame_time();
+        
+                if player.on_ground(&current_stage.platforms) {
+                    if is_key_pressed(KeyCode::Space){
+                        player.velocity.y = -player.jump;
+                    } else {
+                        player.velocity.y = 0.0;
+                    }
+                } else {
+                    player.velocity.y += 10.0 * get_frame_time()
+                }
+        
+                // draw all platforms
+                for (platform, passable) in &current_stage.platforms {
+                    if !passable {
+                       draw_rectangle(platform.x, platform.y, platform.w, platform.h, BLACK) 
+                    } else {
+                        draw_rectangle(platform.x, platform.y, platform.w, platform.h, DARKGRAY) 
+                    }
+                    
+                }
+        
+                // draw finish
+                draw_rectangle(current_stage.finish.x, current_stage.finish.y, finish_size.x, finish_size.y, RED);
+        
+                // write level name
+                draw_text(&current_stage.name, 20.0, 20.0, 30.0, BLACK);
+        
+                if clock_enabled {
+                    clock += get_frame_time();
+                    let clock_text = &format!("{:.2}", clock)[..];
+                    draw_text(clock_text, 320.0, 20.0, 30.0, BLACK);
+                }
+                
+        
+                // add velocity to player, basically `move_and_slide()`
+                player.position += player.velocity;
+        
+                // check if the player finished
+                if player.in_end(current_stage.finish, finish_size) {
+                    current_state = GameState::Game(level + 1);
+                    break 'platformer_loop;
+                    // current_stage = &all_levels[level + 1];
+                    // player.position = current_stage.start_pos;
+                }
+        
+                // reset the player if they go off the screen
+                if player.position.y > 1080.0 {
+                    player.position = current_stage.start_pos
+                }
+        
+                player.in_ceiling(&current_stage.platforms);
+                player.on_wall(&current_stage.platforms);
+        
+                // move window to player
+                set_window_position((player.position.x * window_multiplier.x) as u32 , (player.position.y * window_multiplier.y) as u32);
+        
+                //draw player
+                draw_rectangle(player.position.x, player.position.y, player.size.x, player.size.y, BLACK);
+        
+                next_frame().await
+            }
         }
-
-        // reset the player if they go off the screen
-        if player.position.y > 1080.0 {
-            player.position = current_stage.start_pos
+        GameState::EndScreen => {
+            todo!()
         }
-
-        player.in_ceiling(&current_stage.platforms);
-        player.on_wall(&current_stage.platforms);
-
-        // move window to player
-        set_window_position((player.position.x * window_multiplier.x) as u32 , (player.position.y * window_multiplier.y) as u32);
-
-        //draw player
-        draw_rectangle(player.position.x, player.position.y, player.size.x, player.size.y, BLACK);
-
-        next_frame().await
     }
+    }   
+
+    
+
+
+    
 }
 
 fn get_input_dir(first: KeyCode, second: KeyCode) -> f32 {
