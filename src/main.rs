@@ -11,7 +11,7 @@ struct Player {
     speed: f32,
     velocity: Vec2,
 } impl Player {
-    fn on_ground(&mut self, platforms: Vec<Rect>) -> bool {
+    fn on_ground(&mut self, platforms: &Vec<Rect>) -> bool {
         for i in platforms {
             if self.position.y + self.size.y >= i.y && self.position.y + self.size.y <= i.y + i.h {
                 if (self.position.x + self.size.x / 2.0) > i.x && (self.position.x + self.size.x / 2.0) < i.x + i.w{
@@ -25,28 +25,29 @@ struct Player {
         false
     }
 
-    // fn in_ceiling(&mut self, platforms: Vec<Rect>) -> bool {
-    //     for i in platforms {
-    //         if self.position.y <= i.y + i.h && self.position.y > i.y{
-    //             if self.position.x + self.size.x / 2.0 > i.x && self.position.x + self.size.x / 2.0 < i.x + i.w {
-    //                 self.velocity.y = 1.0;
-    //                 return true
-    //             }
-    //         }
-    //     }
-    //     false
-    // }
-
-    fn on_wall(&mut self, platforms: Vec<Rect>) -> bool {
+    fn in_ceiling(&mut self, platforms: &Vec<Rect>) {
         for i in platforms {
-            if self.position.x > i.x && self.position.x + self.size.x < i.x + i.w {
-                if self.position.y > i.y && self.position.y < i.y +i.h {
-                    self.velocity.x = 0.0;
-                    return true  
+            if self.position.y <= i.y + i.h && self.position.y > i.y{
+                if self.position.x + self.size.x / 2.0 > i.x && self.position.x + self.size.x / 2.0 < i.x + i.w {
+                    self.velocity.y = 1.0;
                 }
             }
         }
-        false
+    }
+
+    fn on_wall(&mut self, platforms: &Vec<Rect>) {
+        for i in platforms {
+            if self.position.y > i.y && self.position.y + self.size.y < i.y + i.h {
+
+                if self.position.x < i.x + i.w{
+                    self.position.x = i.x + i.w;
+                } 
+
+                // else if self.position.x + self.size.x > i.x {
+                //     self.position.x = i.x + self.size.x;
+                // }
+            }
+        }
     }
 
     fn in_end(&self, finish_pos: Vec2, finish_size: Vec2) -> bool {
@@ -87,7 +88,7 @@ async fn main() {
 
         player.velocity.x = get_input_dir(KeyCode::Left, KeyCode::Right) * player.speed * get_frame_time();
 
-        if player.on_ground(current_stage.platforms.clone()) {
+        if player.on_ground(&current_stage.platforms) {
             if is_key_pressed(KeyCode::Space){
                 player.velocity.y = -player.jump;
             } else {
@@ -129,7 +130,8 @@ async fn main() {
         //draw player
         draw_rectangle(player.position.x, player.position.y, player.size.x, player.size.y, BLACK);
 
-        println!("{}", player.on_wall(current_stage.platforms.clone()));
+        player.in_ceiling(&current_stage.platforms);
+        player.on_wall(&current_stage.platforms);
 
         next_frame().await
     }
