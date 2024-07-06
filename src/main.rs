@@ -69,8 +69,8 @@ struct Player {
 #[macroquad::main("Platformer")]
 async fn main() {
 
-    let all_levels = [level_0(), level_1(), level_2(), level_3(), level_4(), level_5(), level_6(), level_7()];
-    let mut current_level = 7;
+    let all_levels = [level_0(), level_1(), level_2(), level_3(), level_4(), level_5(), level_6(), level_7(), level_8(), level_9()];
+    let mut current_level = 9;
 
     let mut player = Player{
         position: vec2(0.0, 0.0),
