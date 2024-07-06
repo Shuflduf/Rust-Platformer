@@ -75,7 +75,7 @@ async fn main() {
         EndScreen,
     }
 
-    let mut current_state = GameState::Game(9);
+    let mut current_state = GameState::MainMenu;
 
     let all_levels = [level_0(), level_1(), level_2(), level_3(), level_4(), level_5(), level_6(), level_7(), level_8(), level_9()];
 
@@ -119,7 +119,6 @@ async fn main() {
         }
         GameState::Game(level) => {
             let finish_size = vec2(50.0, 50.0);
-            clock = 0.0;
 
             let current_stage = &all_levels[level];
             player.position = current_stage.start_pos;
@@ -208,6 +207,7 @@ async fn main() {
                 if is_mouse_button_pressed(MouseButton::Left) {
                     if button_rect.contains(mouse_position().into()){
                         current_state = GameState::Game(0);
+                        clock = 0.0;
                         break 'render_loop;
                     }
                 }
