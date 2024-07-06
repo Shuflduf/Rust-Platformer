@@ -103,11 +103,20 @@ async fn main() {
             let main_menu = menus::start_menu();
             'render_loop: loop {
                 clear_background(WHITE);
+
                 draw_text(main_menu.text, 100.0, 120.0, 80.0, BLACK);
-                // if root_ui().button(vec2(100.0, 100.0), "Text") {
-                //     println!("jhgjdkfg");
-                // }
-                draw_rectangle(100.0, 150.0, 200.0, 100.0, BLACK);
+                
+                let button_rect = Rect::new(100.0, 150.0, 200.0, 100.0);
+
+                draw_rectangle(button_rect.x, button_rect.y, button_rect.w, button_rect.h, BLACK);
+                draw_text(main_menu.button_text, 110.0, 225.0, 100.0, RED);
+
+                if is_mouse_button_pressed(MouseButton::Left) {
+                    if button_rect.contains(mouse_position().into()){
+                        println!("jkhdf");
+                    }
+                }
+
                 next_frame().await
             }
         }
