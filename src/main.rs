@@ -97,7 +97,24 @@ async fn main() {
     match current_state {
         GameState::MainMenu => {
             let main_menu = menus::start_menu();
+
+            let mut window_pos = vec2(0.0, 0.0);
+            let mut window_dir = vec2(1.0, 1.0);
+            let window_size = vec2(400.0, 400.0);
+
             'render_loop: loop {
+                window_pos += window_dir;
+
+                {
+                    if window_pos.x <= 0.0 {window_dir.x *= -1.0}
+                    if window_pos.y <= 0.0 {window_dir.y *= -1.0}
+                    if window_pos.x + window_size.x >= 1920.0 {window_dir.x *= -1.0}
+                    if window_pos.y + window_size.y >= 1080.0 {window_dir.y *= -1.0}
+                }
+
+                set_window_size(window_size.x as u32, window_size.x as u32);
+                set_window_position(window_pos.x as u32, window_pos.y as u32);
+
                 clear_background(WHITE);
 
                 draw_text(main_menu.text, 100.0, 120.0, 80.0, BLACK);
