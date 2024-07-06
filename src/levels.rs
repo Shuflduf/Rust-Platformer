@@ -123,8 +123,8 @@ pub fn level_6() -> Level {
 pub fn level_7() -> Level {
     Level{
         name: "SO WHY",
-        // start_pos: vec2(10.0, 350.0),
-        start_pos: vec2(10.0, 0.0),
+        start_pos: vec2(10.0, 350.0),
+        // start_pos: vec2(10.0, 0.0),
         platforms: vec![
             (Rect::new(0.0, 350.0, 50.0, 50.0), false),
             (Rect::new(40.0, 0.0, 20.0, 400.0), false),
