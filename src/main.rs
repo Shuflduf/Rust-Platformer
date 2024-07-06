@@ -106,14 +106,15 @@ async fn main() {
 
                 draw_text(main_menu.text, 100.0, 120.0, 80.0, BLACK);
                 
-                let button_rect = Rect::new(100.0, 150.0, 200.0, 100.0);
+                let button_rect = Rect::new(90.0, 150.0, 220.0, 100.0);
 
                 draw_rectangle(button_rect.x, button_rect.y, button_rect.w, button_rect.h, BLACK);
-                draw_text(main_menu.button_text, 110.0, 225.0, 100.0, RED);
+                draw_text(main_menu.button_text, 100.0, 225.0, 90.0, RED);
 
                 if is_mouse_button_pressed(MouseButton::Left) {
                     if button_rect.contains(mouse_position().into()){
-                        println!("jkhdf");
+                        current_state = GameState::Game(0);
+                        break 'render_loop;
                     }
                 }
 

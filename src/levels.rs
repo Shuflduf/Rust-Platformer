@@ -23,7 +23,7 @@ pub fn level_0() -> Level {
 
 pub fn level_1() -> Level {
     Level{
-        name: "THE GREY VOID.",
+        name: "THE GREY VOID",
         start_pos: vec2(20.0, 300.0),
         platforms: vec![
             (Rect::new(0.0, 350.0, 400.0, 50.0), false),
@@ -56,7 +56,7 @@ pub fn level_2() -> Level {
 
 pub fn level_3() -> Level {
     Level{
-        name: "AND THROUGH DOORS.",
+        name: "AND THROUGH DOORS",
         start_pos: vec2(360.0, 330.0),
         platforms: vec![
             (Rect::new(0.0, 350.0, 400.0, 50.0), false),
