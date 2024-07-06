@@ -25,6 +25,30 @@ struct Player {
         false
     }
 
+    // fn in_ceiling(&mut self, platforms: Vec<Rect>) -> bool {
+    //     for i in platforms {
+    //         if self.position.y <= i.y + i.h && self.position.y > i.y{
+    //             if self.position.x + self.size.x / 2.0 > i.x && self.position.x + self.size.x / 2.0 < i.x + i.w {
+    //                 self.velocity.y = 1.0;
+    //                 return true
+    //             }
+    //         }
+    //     }
+    //     false
+    // }
+
+    fn on_wall(&mut self, platforms: Vec<Rect>) -> bool {
+        for i in platforms {
+            if self.position.x > i.x && self.position.x + self.size.x < i.x + i.w {
+                if self.position.y > i.y && self.position.y < i.y +i.h {
+                    self.velocity.x = 0.0;
+                    return true  
+                }
+            }
+        }
+        false
+    }
+
     fn in_end(&self, finish_pos: Vec2, finish_size: Vec2) -> bool {
         let center = self.position + (self.size / 2.0);
             center.x > finish_pos.x 
@@ -37,8 +61,8 @@ struct Player {
 #[macroquad::main("Platformer")]
 async fn main() {
 
-    let all_levels = [level_0(), level_1(), level_2()];
-    let mut current_level = 2;
+    let all_levels = [level_0(), level_1(), level_2(), level_3()];
+    let mut current_level = 3;
 
     let mut player = Player{
         position: vec2(0.0, 0.0),
@@ -104,6 +128,8 @@ async fn main() {
 
         //draw player
         draw_rectangle(player.position.x, player.position.y, player.size.x, player.size.y, BLACK);
+
+        println!("{}", player.on_wall(current_stage.platforms.clone()));
 
         next_frame().await
     }
