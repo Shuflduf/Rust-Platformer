@@ -124,7 +124,6 @@ pub fn level_7() -> Level {
     Level{
         name: "SO WHY",
         start_pos: vec2(10.0, 350.0),
-        // start_pos: vec2(10.0, 0.0),
         platforms: vec![
             (Rect::new(0.0, 350.0, 50.0, 50.0), false),
             (Rect::new(40.0, 0.0, 20.0, 400.0), false),
@@ -195,26 +194,33 @@ pub fn level_8() -> Level {
 
 pub fn level_9() -> Level {
     Level{
-        name: "KNOW WHO I AM",
-        start_pos: vec2(10.0, 350.0),
-        // start_pos: vec2(10.0, 0.0),
+        name: "RECOGNIZE ME",
+        start_pos: vec2(365.0, 345.0),
+
         platforms: vec![
-            (Rect::new(0.0, 350.0, 50.0, 50.0), false),
-            (Rect::new(40.0, 0.0, 20.0, 400.0), false),
-            (Rect::new(0.0, 290.0, 50.0, 20.0), false),
-            (Rect::new(0.0, 230.0, 50.0, 20.0), false),
-            (Rect::new(0.0, 170.0, 50.0, 20.0), false),
-            (Rect::new(0.0, 110.0, 50.0, 20.0), false),
-            (Rect::new(0.0, 50.0, 50.0, 20.0), false),
-            (Rect::new(120.0, 0.0, 20.0, 250.0), false),
-            (Rect::new(85.0, 350.0, 20.0, 20.0), false),
-            (Rect::new(120.0, 270.0, 20.0, 20.0), false),
-            (Rect::new(160.0, 300.0, 20.0, 20.0), false),
-            (Rect::new(230.0, 280.0, 20.0, 20.0), false),
-            (Rect::new(260.0, 220.0, 20.0, 20.0), false),
-            (Rect::new(260.0, 150.0, 20.0, 20.0), false),
-            (Rect::new(320.0, 80.0, 50.0, 20.0), false),
+            (Rect::new(350.0, 350.0, 50.0, 50.0), false),
+            (Rect::new(100.0, 200.0, 300.0, 20.0), false),
+            (Rect::new(0.0, 50.0, 400.0, 20.0), false),
+
+            (Rect::new(300.0, 300.0, 20.0, 20.0), false),
+            (Rect::new(270.0, 250.0, 20.0, 20.0), false),
+            (Rect::new(230.0, 300.0, 20.0, 20.0), false),
+            (Rect::new(170.0, 320.0, 20.0, 20.0), false),
+            (Rect::new(100.0, 280.0, 30.0, 20.0), false),
+
+            (Rect::new(120.0, 140.0, 40.0, 80.0), false),
+            (Rect::new(120.0, 50.0, 40.0, 70.0), false),
+
+            (Rect::new(180.0, 180.0, 40.0, 40.0), false),
+            (Rect::new(180.0, 50.0, 40.0, 110.0), false),
+
+            (Rect::new(240.0, 100.0, 20.0, 100.0), true),
+            (Rect::new(260.0, 100.0, 20.0, 120.0), false),
+            (Rect::new(240.0, 50.0, 40.0, 30.0), false),
+
+            (Rect::new(360.0, 150.0, 40.0, 20.0), true),
+            (Rect::new(360.0, 110.0, 40.0, 20.0), true),
         ],
-        finish: vec2(350.0, 0.0)
+        finish: vec2(0.0, 0.0)
     }
 }

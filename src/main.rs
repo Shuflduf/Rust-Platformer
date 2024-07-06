@@ -44,7 +44,7 @@ struct Player {
                 continue;
             }
             
-            if self.position.y > i.y && self.position.y + self.size.y < i.y + i.h {
+            if self.position.y >= i.y && self.position.y + self.size.y <= i.y + i.h {
 
                 if self.position.x < i.x + i.w && self.position.x > i.x {
                     self.position.x = i.x + i.w;
