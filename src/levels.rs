@@ -9,7 +9,7 @@ pub struct Level {
 }
 pub fn level_0() -> Level {
     Level{
-        name: "WELCOME",
+        name: "WELCOME,",
         start_pos: vec2(350.0, 40.0),
         platforms: vec![
             (Rect::new(300.0, 50.0, 100.0, 20.0), false),
@@ -23,7 +23,7 @@ pub fn level_0() -> Level {
 
 pub fn level_1() -> Level {
     Level{
-        name: "THE WORLD",
+        name: "TO THIS WORLD,",
         start_pos: vec2(20.0, 300.0),
         platforms: vec![
             (Rect::new(0.0, 350.0, 400.0, 50.0), false),
@@ -38,7 +38,7 @@ pub fn level_1() -> Level {
 
 pub fn level_2() -> Level {
     Level{
-        name: "HAS NO WALLS",
+        name: "IT HAS NO WALLS,",
         start_pos: vec2(20.0, 20.0),
         platforms: vec![
             (Rect::new(0.0, 40.0, 380.0, 20.0), false),
@@ -56,7 +56,7 @@ pub fn level_2() -> Level {
 
 pub fn level_3() -> Level {
     Level{
-        name: "NO BOUNDARIES",
+        name: "NO BOUNDARIES,",
         start_pos: vec2(360.0, 330.0),
         platforms: vec![
             (Rect::new(0.0, 350.0, 400.0, 50.0), false),
@@ -71,6 +71,24 @@ pub fn level_3() -> Level {
             (Rect::new(300.0, 50.0, 50.0, 20.0), true),
         ],
         finish: vec2(350.0, 0.0)
+    }
+}
+
+pub fn level_4() -> Level {
+    Level{
+        name: "AND NO SELF.",
+        start_pos: vec2(360.0, 40.0),
+        platforms: vec![
+            (Rect::new(0.0, 350.0, 400.0, 50.0), false),
+            (Rect::new(0.0, 110.0, 400.0, 20.0), false),
+            (Rect::new(190.0, 0.0, 20.0, 130.0), false),
+            (Rect::new(190.0, 200.0, 20.0, 200.0), false),
+            (Rect::new(250.0, 270.0, 100.0, 20.0), true),
+            (Rect::new(50.0, 270.0, 100.0, 20.0), true),
+            (Rect::new(0.0, 190.0, 100.0, 20.0), true),
+
+        ],
+        finish: vec2(0.0, 0.0)
     }
 }
 

@@ -12,11 +12,11 @@ struct Player {
     velocity: Vec2,
 } impl Player {
     fn on_ground(&mut self, platforms: &Vec<(Rect, bool)>) -> bool {
-        for i in platforms {
-            if self.position.y + self.size.y >= i.0.y && self.position.y + self.size.y <= i.0.y + i.0.h {
-                if (self.position.x + self.size.x / 2.0) > i.0.x && (self.position.x + self.size.x / 2.0) < i.0.x + i.0.w{
+        for (i, _passable) in platforms {
+            if self.position.y + self.size.y >= i.y && self.position.y + self.size.y <= i.y + i.h {
+                if (self.position.x + self.size.x / 2.0) > i.x && (self.position.x + self.size.x / 2.0) < i.x + i.w{
                     if self.velocity.y >= 0.0 {
-                        self.position.y = i.0.y - self.size.y;
+                        self.position.y = i.y - self.size.y;
                         return true;
                     }
                 }
@@ -32,7 +32,7 @@ struct Player {
             }
             if self.position.y <= i.y + i.h && self.position.y > i.y{
                 if self.position.x + self.size.x / 2.0 > i.x && self.position.x + self.size.x / 2.0 < i.x + i.w {
-                    self.velocity.y = 1.0;
+                    self.velocity.y = 0.1;
                 }
             }
         }
@@ -69,8 +69,8 @@ struct Player {
 #[macroquad::main("Platformer")]
 async fn main() {
 
-    let all_levels = [level_0(), level_1(), level_2(), level_3()];
-    let mut current_level = 3;
+    let all_levels = [level_0(), level_1(), level_2(), level_3(), level_4()];
+    let mut current_level = 4;
 
     let mut player = Player{
         position: vec2(0.0, 0.0),
@@ -146,14 +146,14 @@ async fn main() {
             player.position = current_stage.start_pos
         }
 
+        player.in_ceiling(&current_stage.platforms);
+        player.on_wall(&current_stage.platforms);
+
         // move window to player
         set_window_position((player.position.x * window_multiplier.x) as u32 , (player.position.y * window_multiplier.y) as u32);
 
         //draw player
         draw_rectangle(player.position.x, player.position.y, player.size.x, player.size.y, BLACK);
-
-        player.in_ceiling(&current_stage.platforms);
-        player.on_wall(&current_stage.platforms);
 
         next_frame().await
     }
