@@ -109,14 +109,28 @@ pub fn level_5() -> Level {
 pub fn level_6() -> Level {
     Level{
         name: "TO REPEAT",
-        start_pos: vec2(20.0, 20.0),
+        start_pos: vec2(365.0, 350.0),
         platforms: vec![
-            (Rect::new(0.0, 50.0, 200.0, 20.0), false),
-            (Rect::new(190.0, 0.0, 20.0, 70.0), false),
-            (Rect::new(200.0, 50.0, 190.0, 20.0), false),
-            (Rect::new(380.0, 0.0, 20.0, 70.0), false),
+            (Rect::new(350.0, 350.0, 50.0, 50.0), false),
+            (Rect::new(270.0, 270.0, 50.0, 20.0), true),
+            (Rect::new(190.0, 190.0, 50.0, 20.0), true),
+            (Rect::new(120.0, 190.0, 20.0, 20.0), false),
         ],
-        finish: vec2(350.0, 350.0)
+        finish: vec2(0.0, 350.0)
+    }
+}
+
+pub fn level_7() -> Level {
+    Level{
+        name: "SO WHY",
+        start_pos: vec2(365.0, 350.0),
+        platforms: vec![
+            (Rect::new(350.0, 350.0, 50.0, 50.0), false),
+            (Rect::new(270.0, 270.0, 50.0, 20.0), true),
+            (Rect::new(190.0, 190.0, 50.0, 20.0), true),
+            (Rect::new(120.0, 190.0, 20.0, 20.0), false),
+        ],
+        finish: vec2(0.0, 350.0)
     }
 }
 
