@@ -57,7 +57,7 @@ pub fn level_2() -> Level {
 
 pub fn level_3() -> Level {
     Level{
-        name: "HAS NO WALLS",
+        name: "NO BOUNDARIES",
         start_pos: vec2(360.0, 330.0),
         platforms: vec![
             Rect::new(0.0, 350.0, 400.0, 50.0),

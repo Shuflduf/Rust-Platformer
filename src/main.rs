@@ -39,13 +39,13 @@ struct Player {
         for i in platforms {
             if self.position.y > i.y && self.position.y + self.size.y < i.y + i.h {
 
-                if self.position.x < i.x + i.w{
+                if self.position.x < i.x + i.w && self.position.x > i.x {
                     self.position.x = i.x + i.w;
                 } 
 
-                // else if self.position.x + self.size.x > i.x {
-                //     self.position.x = i.x + self.size.x;
-                // }
+                else if self.position.x + self.size.x > i.x && self.position.x < i.x{
+                    self.position.x = i.x - self.size.x;
+                }
             }
         }
     }
