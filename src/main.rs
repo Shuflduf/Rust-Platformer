@@ -1,10 +1,11 @@
-// use levels::levels::{level_1, level_2};
+use macroquad::ui::root_ui;
+use macroquad::ui::widgets::Button;
 use macroquad::{input::KeyCode, prelude::*};
 use miniquad::window::{set_window_position, set_window_size};
-use state_machine::State;
 
 use crate::levels::*;
 mod levels;
+use crate::menus::*;
 mod menus;
 struct Player {
     position: Vec2,
@@ -68,7 +69,7 @@ struct Player {
     }
 }
 
-#[macroquad::main("Platformer")]
+#[macroquad::main("Exodus")]
 async fn main() {
 
     enum GameState {
@@ -77,7 +78,7 @@ async fn main() {
         EndScreen,
     }
 
-    let mut current_state = GameState::Game(1);
+    let mut current_state = GameState::MainMenu;
 
     let all_levels = [level_0(), level_1(), level_2(), level_3(), level_4(), level_5(), level_6(), level_7(), level_8(), level_9()];
 
@@ -98,11 +99,19 @@ async fn main() {
     loop {
     match current_state {
         GameState::MainMenu => {
-            todo!()
+            
+            let main_menu = menus::start_menu();
+            'render_loop: loop {
+                clear_background(WHITE);
+                draw_text(main_menu.text, 100.0, 120.0, 80.0, BLACK);
+                // if root_ui().button(vec2(100.0, 100.0), "Text") {
+                //     println!("jhgjdkfg");
+                // }
+                draw_rectangle(100.0, 150.0, 200.0, 100.0, BLACK);
+                next_frame().await
+            }
         }
         GameState::Game(level) => {
-
-
             let finish_size = vec2(50.0, 50.0);
 
             let current_stage = &all_levels[level];

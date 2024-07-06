@@ -1,13 +1,13 @@
 use macroquad::ui::widgets::*;
 
 pub struct Ui<'a> {
-    text: &'a str,
-    button: Button<'a>
+    pub text: &'a str,
+    pub button: Button<'a>
 }
 
 pub fn start_menu() -> Ui<'static>{
     Ui {
-        text: "Game",
+        text: "Exodus",
         button: Button::new("Text")
     }
     
