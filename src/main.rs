@@ -80,6 +80,9 @@ async fn main() {
         velocity: vec2(0.0, 0.0)
     };
 
+    let clock_enabled = true;
+    let mut clock = 0.0;
+
     let finish_size = vec2(50.0, 50.0);
     
     set_window_size(400, 400);
@@ -120,6 +123,13 @@ async fn main() {
 
         // write level name
         draw_text(&current_stage.name, 20.0, 20.0, 30.0, BLACK);
+
+        if clock_enabled {
+            clock += get_frame_time();
+            let clock_text = &format!("{:.2}", clock)[..];
+            draw_text(clock_text, 320.0, 20.0, 30.0, BLACK);
+        }
+        
 
         // add velocity to player, basically `move_and_slide()`
         player.position += player.velocity;
