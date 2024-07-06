@@ -9,7 +9,7 @@ pub struct Level {
 }
 pub fn level_0() -> Level {
     Level{
-        name: "WELCOME,",
+        name: "YOU'VE ESCAPED",
         start_pos: vec2(350.0, 40.0),
         platforms: vec![
             (Rect::new(300.0, 50.0, 100.0, 20.0), false),
@@ -23,7 +23,7 @@ pub fn level_0() -> Level {
 
 pub fn level_1() -> Level {
     Level{
-        name: "TO THIS WORLD,",
+        name: "THE GREY VOID.",
         start_pos: vec2(20.0, 300.0),
         platforms: vec![
             (Rect::new(0.0, 350.0, 400.0, 50.0), false),
@@ -38,7 +38,7 @@ pub fn level_1() -> Level {
 
 pub fn level_2() -> Level {
     Level{
-        name: "IT HAS NO WALLS,",
+        name: "THROUGH SHORTCUTS",
         start_pos: vec2(20.0, 20.0),
         platforms: vec![
             (Rect::new(0.0, 40.0, 380.0, 20.0), false),
@@ -56,7 +56,7 @@ pub fn level_2() -> Level {
 
 pub fn level_3() -> Level {
     Level{
-        name: "NO BOUNDARIES,",
+        name: "AND THROUGH DOORS.",
         start_pos: vec2(360.0, 330.0),
         platforms: vec![
             (Rect::new(0.0, 350.0, 400.0, 50.0), false),
@@ -76,7 +76,7 @@ pub fn level_3() -> Level {
 
 pub fn level_4() -> Level {
     Level{
-        name: "AND NO SELF.",
+        name: "ESCAPING BOUNDARIES",
         start_pos: vec2(360.0, 40.0),
         platforms: vec![
             (Rect::new(0.0, 350.0, 400.0, 50.0), false),
@@ -89,6 +89,34 @@ pub fn level_4() -> Level {
 
         ],
         finish: vec2(0.0, 0.0)
+    }
+}
+
+pub fn level_5() -> Level {
+    Level{
+        name: "BEFORE COMING BACK",
+        start_pos: vec2(20.0, 20.0),
+        platforms: vec![
+            (Rect::new(0.0, 50.0, 200.0, 20.0), false),
+            (Rect::new(190.0, 0.0, 20.0, 70.0), false),
+            (Rect::new(200.0, 50.0, 190.0, 20.0), false),
+            (Rect::new(380.0, 0.0, 20.0, 70.0), false),
+        ],
+        finish: vec2(350.0, 350.0)
+    }
+}
+
+pub fn level_6() -> Level {
+    Level{
+        name: "TO REPEAT",
+        start_pos: vec2(20.0, 20.0),
+        platforms: vec![
+            (Rect::new(0.0, 50.0, 200.0, 20.0), false),
+            (Rect::new(190.0, 0.0, 20.0, 70.0), false),
+            (Rect::new(200.0, 50.0, 190.0, 20.0), false),
+            (Rect::new(380.0, 0.0, 20.0, 70.0), false),
+        ],
+        finish: vec2(350.0, 350.0)
     }
 }
 
