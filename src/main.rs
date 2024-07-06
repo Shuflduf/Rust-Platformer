@@ -11,12 +11,12 @@ struct Player {
     speed: f32,
     velocity: Vec2,
 } impl Player {
-    fn on_ground(&mut self, platforms: &Vec<Rect>) -> bool {
+    fn on_ground(&mut self, platforms: &Vec<(Rect, bool)>) -> bool {
         for i in platforms {
-            if self.position.y + self.size.y >= i.y && self.position.y + self.size.y <= i.y + i.h {
-                if (self.position.x + self.size.x / 2.0) > i.x && (self.position.x + self.size.x / 2.0) < i.x + i.w{
+            if self.position.y + self.size.y >= i.0.y && self.position.y + self.size.y <= i.0.y + i.0.h {
+                if (self.position.x + self.size.x / 2.0) > i.0.x && (self.position.x + self.size.x / 2.0) < i.0.x + i.0.w{
                     if self.velocity.y >= 0.0 {
-                        self.position.y = i.y - self.size.y;
+                        self.position.y = i.0.y - self.size.y;
                         return true;
                     }
                 }
@@ -25,8 +25,11 @@ struct Player {
         false
     }
 
-    fn in_ceiling(&mut self, platforms: &Vec<Rect>) {
-        for i in platforms {
+    fn in_ceiling(&mut self, platforms: &Vec<(Rect, bool)>) {
+        for (i, passable) in platforms {
+            if *passable {
+                continue;
+            }
             if self.position.y <= i.y + i.h && self.position.y > i.y{
                 if self.position.x + self.size.x / 2.0 > i.x && self.position.x + self.size.x / 2.0 < i.x + i.w {
                     self.velocity.y = 1.0;
@@ -35,8 +38,12 @@ struct Player {
         }
     }
 
-    fn on_wall(&mut self, platforms: &Vec<Rect>) {
-        for i in platforms {
+    fn on_wall(&mut self, platforms: &Vec<(Rect, bool)>) {
+        for (i, passable) in platforms {
+            if *passable {
+                continue;
+            }
+            
             if self.position.y > i.y && self.position.y + self.size.y < i.y + i.h {
 
                 if self.position.x < i.x + i.w && self.position.x > i.x {
@@ -99,8 +106,13 @@ async fn main() {
         }
 
         // draw all platforms
-        for platform in &current_stage.platforms {
-            draw_rectangle(platform.x, platform.y, platform.w, platform.h, BLACK)
+        for (platform, passable) in &current_stage.platforms {
+            if !passable {
+               draw_rectangle(platform.x, platform.y, platform.w, platform.h, BLACK) 
+            } else {
+                draw_rectangle(platform.x, platform.y, platform.w, platform.h, DARKGRAY) 
+            }
+            
         }
 
         // draw finish
