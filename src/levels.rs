@@ -60,8 +60,15 @@ pub fn level_3() -> Level {
         start_pos: vec2(360.0, 330.0),
         platforms: vec![
             (Rect::new(0.0, 350.0, 400.0, 50.0), false),
-            (Rect::new(150.0, 200.0, 100.0, 100.0), true),
-            
+            (Rect::new(0.0, 300.0, 50.0, 20.0), true),
+            (Rect::new(0.0, 250.0, 50.0, 20.0), true),
+            (Rect::new(0.0, 200.0, 50.0, 20.0), true),
+            (Rect::new(0.0, 150.0, 50.0, 20.0), true),
+            (Rect::new(0.0, 100.0, 50.0, 20.0), true),
+            (Rect::new(0.0, 50.0, 50.0, 20.0), true),
+            (Rect::new(100.0, 50.0, 50.0, 20.0), true),
+            (Rect::new(200.0, 50.0, 50.0, 20.0), true),
+            (Rect::new(300.0, 50.0, 50.0, 20.0), true),
         ],
         finish: vec2(350.0, 0.0)
     }
